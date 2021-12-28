@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:my_posts/core/usecases/usecase.dart';
 import 'package:my_posts/domain/entities/user_post_entity.dart';
 import 'package:my_posts/domain/usecases/get_user_post_usecase.dart';
 part 'userpost_state.dart';
@@ -14,7 +15,7 @@ class UserPostCubit extends Cubit<UserPostState> {
   Future<void> getUserPost() async {
     try {
       emit(const UserPostLoading());
-      final userPostEither = await getUserPostUseCase.call();
+      final userPostEither = await getUserPostUseCase.call(NoParams());
       userPostEither.fold(
           (failure) => emit(UserPostError(message: failure.toString())),
           (loadedPost) => emit(UserPostLoaded(lstUserPost: loadedPost)));

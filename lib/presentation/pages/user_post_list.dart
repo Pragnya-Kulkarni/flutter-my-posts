@@ -60,21 +60,68 @@ class _UserPostListState extends State<UserPostList> {
                 margin: EdgeInsets.all(8.0),
                 color: Colors.lightBlue.shade100,
                 child: ListTile(
-                  title: Row(
+                  title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(
-                          child: Text(lstUserPost[index].id.toString()),
-                          margin: EdgeInsets.only(left: 2, right: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: Text('Id: ',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              margin: EdgeInsets.only(left: 2, right: 2),
+                            ),
+                            Expanded(
+                              child: Container(
+                                child: Text(lstUserPost[index].id.toString()),
+                                margin: EdgeInsets.only(left: 15),
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.topRight,
+                              child: IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () {},
+                              ),
+                            ),
+                          ],
                         ),
-                        Expanded(
-                            flex: 2,
-                            child: Container(
-                                child: Text(lstUserPost[index].title))),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: Text(
+                                'title: ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              margin: EdgeInsets.only(left: 2, right: 2),
+                            ),
+                            Expanded(
+                                flex: 2,
+                                child: Container(
+                                  child: Text(lstUserPost[index].title),
+                                  margin: EdgeInsets.only(bottom: 10),
+                                )),
+                          ],
+                        ),
                       ]),
-                  subtitle: Container(
-                      margin: EdgeInsets.all(5.0),
-                      child: Text(lstUserPost[index].body)),
+                  subtitle: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        child: Text('Description: ',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        margin: EdgeInsets.only(left: 2.0, top: 4),
+                      ),
+                      Container(
+                          margin: EdgeInsets.all(4.0),
+                          child: Text(lstUserPost[index].body)),
+                    ],
+                  ),
                   // contentPadding: EdgeInsets.only(bottom: 20.0),
                 ),
               ),
