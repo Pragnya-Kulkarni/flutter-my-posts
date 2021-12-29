@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_posts/domain/entities/user_post_entity.dart';
+import 'package:my_posts/presentation/cubit/userpost_cubit.dart';
 
 class UserPostList extends StatefulWidget {
   List<UserPostEntity> lstUserPost;
@@ -40,6 +42,8 @@ class _UserPostListState extends State<UserPostList> {
               },
               onDismissed: (DismissDirection direction) {
                 if (direction == DismissDirection.endToStart) {
+                  BlocProvider.of<UserPostCubit>(context)
+                      .deleteUserPost(lstUserPost[index].id);
                   lstUserPost.removeAt(index);
                   ScaffoldMessenger.of(context).showSnackBar(
                       new SnackBar(content: new Text("Item dismissed")));

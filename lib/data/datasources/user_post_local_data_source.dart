@@ -1,10 +1,11 @@
 import 'package:my_posts/data/models/user_post_model.dart';
 
 abstract class UserPostLocalDataSource {
-  //throws [ServerException] exception on error
   Future<List<UserPostModel>> getUserPost();
-  // throws [ServerException] exception on error
+
   Future<UserPostModel> getUserPostById(int id);
+
+  Future<void> deleteUserPostById(int id);
 }
 
 class UserPostLocalDataImpl implements UserPostLocalDataSource {
@@ -17,6 +18,12 @@ class UserPostLocalDataImpl implements UserPostLocalDataSource {
   @override
   Future<UserPostModel> getUserPostById(int id) {
     // TODO: implement getUserPostById
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteUserPostById(int id) {
+    // TODO: implement deleteUserPostById
     throw UnimplementedError();
   }
 }

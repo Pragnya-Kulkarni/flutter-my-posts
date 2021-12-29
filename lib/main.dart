@@ -10,6 +10,8 @@ import 'package:my_posts/presentation/cubit/userpost_cubit.dart';
 import 'package:my_posts/presentation/pages/user_post_initial_page.dart';
 import 'package:http/http.dart' as http;
 
+import 'domain/usecases/delete_user_post_usecase.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -45,6 +47,13 @@ class _MyHomePageState extends State<MyHomePage> {
     return MaterialApp(
         home: BlocProvider(
             create: (context) => UserPostCubit(
+                deleteUserPostUseCase: DeleteUserPostUseCase(
+                    UserPostRepositoryImpl(
+                        remoteDataSource:
+                            UserPostRemoteDataImpl(client: http.Client()),
+                        networkInfo:
+                            NetworkInfoImpl(InternetConnectionChecker()),
+                        localDataSource: UserPostLocalDataImpl())),
                 getUserPostUseCase: GetUserPostUseCase(UserPostRepositoryImpl(
                     remoteDataSource:
                         UserPostRemoteDataImpl(client: http.Client()),

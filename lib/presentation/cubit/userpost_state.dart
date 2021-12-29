@@ -34,3 +34,10 @@ class UserPostError extends UserPostState {
   @override
   List<Object?> get props => [message];
 }
+
+class UserPostDeleted extends UserPostState {
+  const UserPostDeleted();
+
+  @override
+  List<Object?> get props => [];
+}

@@ -14,7 +14,13 @@ class _UserPostInitialPageState extends State<UserPostInitialPage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<UserPostCubit>(context).getUserPost();
+    loadUserPost();
+  }
+
+  void loadUserPost() {
+    setState(() {
+      BlocProvider.of<UserPostCubit>(context).getUserPost();
+    });
   }
 
   @override
@@ -39,9 +45,9 @@ class _UserPostInitialPageState extends State<UserPostInitialPage> {
             }, builder: (ctx, state) {
               if (state is UserPostLoaded) {
                 return UserPostList(lstUserPost: state.lstUserPost);
-              } else if (state is UserPostError)
+              } else if (state is UserPostError) {
                 return Center(child: Text(state.message));
-              else {
+              } else {
                 return CircularProgressIndicator();
               }
             })),

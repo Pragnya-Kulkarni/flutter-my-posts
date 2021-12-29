@@ -7,7 +7,7 @@ import 'package:my_posts/data/datasources/user_post_remote_data_source.dart';
 import 'package:my_posts/domain/entities/user_post_entity.dart';
 import 'package:my_posts/domain/repositories/user_post_repository.dart';
 
-class UserPostRepositoryImpl extends UserPostRepository {
+class UserPostRepositoryImpl implements UserPostRepository {
   final UserPostRemoteDataSource remoteDataSource;
   final UserPostLocalDataSource localDataSource;
   final NetworkInfo networkInfo;
@@ -48,6 +48,25 @@ class UserPostRepositoryImpl extends UserPostRepository {
       try {
         final localUserPost = await localDataSource.getUserPostById(id);
         return Right(localUserPost);
+      } on CacheException {
+        return Left(CacheFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteUserPostsById(int id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        await remoteDataSource.deleteUserPostById(id);
+        return Right(null);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        await localDataSource.deleteUserPostById(id);
+        return Right(null);
       } on CacheException {
         return Left(CacheFailure());
       }

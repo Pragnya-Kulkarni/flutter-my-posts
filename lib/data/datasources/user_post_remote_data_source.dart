@@ -8,9 +8,11 @@ abstract class UserPostRemoteDataSource {
   Future<List<UserPostModel>> getUserPost();
   // throws [ServerException] exception on error
   Future<UserPostModel> getUserPostById(int id);
+  // throws [ServerException] exception on error
+  Future<void> deleteUserPostById(int id);
 }
 
-const String userPostURL = 'https://jsonplaceholder.typicode.com/posts?';
+const String userPostURL = 'https://jsonplaceholder.typicode.com/posts/';
 
 class UserPostRemoteDataImpl implements UserPostRemoteDataSource {
   http.Client client;
@@ -38,11 +40,23 @@ class UserPostRemoteDataImpl implements UserPostRemoteDataSource {
 
   @override
   Future<UserPostModel> getUserPostById(int id) async {
-    String link = userPostURL + 'id=$id';
+    String link = userPostURL + '$id';
     final response = await client
         .get(Uri.parse(link), headers: {'Content-Type': 'application/json'});
     if (response.statusCode == 200) {
       return UserPostModel.fromJson(jsonDecode(response.body));
+    } else {
+      throw ServerException("Server error occurred");
+    }
+  }
+
+  @override
+  Future<void> deleteUserPostById(int id) async {
+    String link = userPostURL + 'id=$id';
+    final response = await client
+        .delete(Uri.parse(link), headers: {'Content-Type': 'application/json'});
+    if (response.statusCode == 200) {
+      return;
     } else {
       throw ServerException("Server error occurred");
     }
