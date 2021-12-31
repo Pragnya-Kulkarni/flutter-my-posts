@@ -27,9 +27,9 @@ class UserPostLoaded extends UserPostState {
   List<Object?> get props => [lstUserPost];
 }
 
-class UserPostError extends UserPostState {
+class UserPostLoadFailed extends UserPostState {
   final String message;
-  const UserPostError({required this.message});
+  const UserPostLoadFailed({required this.message});
 
   @override
   List<Object?> get props => [message];
@@ -42,6 +42,14 @@ class UserPostDeleted extends UserPostState {
   List<Object?> get props => [];
 }
 
+class UserPostDeleteFailed extends UserPostState {
+  final String message;
+  const UserPostDeleteFailed({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
 class UserPostAdding extends UserPostState {
   const UserPostAdding();
 
@@ -50,8 +58,9 @@ class UserPostAdding extends UserPostState {
 }
 
 class UserPostAdded extends UserPostState {
-  const UserPostAdded({required this.addedUserPost});
   final UserPostEntity addedUserPost;
+  const UserPostAdded({required this.addedUserPost});
+
   @override
   List<Object?> get props => [addedUserPost];
 }

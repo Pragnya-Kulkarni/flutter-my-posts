@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_posts/domain/entities/user_post_entity.dart';
 import 'package:my_posts/presentation/cubit/userpost_cubit.dart';
 
 class UserPostAddEdit extends StatefulWidget {
   final UserPostEntity? userPostEntity;
-  final isEdit;
+  final bool isEdit;
   const UserPostAddEdit({this.userPostEntity, required this.isEdit, Key? key})
       : super(key: key);
 
@@ -51,22 +52,24 @@ class _UserPostAddEditState extends State<UserPostAddEdit> {
             body: BlocConsumer<UserPostCubit, UserPostState>(
               bloc: userPostCubit,
               listener: (_, state) {
-                if (state is UserPostAdded || state is UserPostUpdated) {
+                if (state is UserPostAdded) {
                   isSuccess = true;
-                  if (widget.isEdit) {
-                    Navigator.pop(context, true);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('UserPost added successfully'),
-                      ),
-                    );
-                    setState(() {
-                      controllerUserId.clear();
-                      controllerTitle.clear();
-                      controllerDescription.clear();
-                    });
-                  }
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          'UserPost \'${state.addedUserPost.title}\' added successfully'),
+                    ),
+                  );
+                  Navigator.pop(context, true);
+                } else if (state is UserPostUpdated) {
+                  isSuccess = true;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          'UserPost \'${state.updatedUserPost.title}\' updated successfully'),
+                    ),
+                  );
+                  Navigator.pop(context, true);
                 } else if (state is UserPostAddFailed) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -90,15 +93,15 @@ class _UserPostAddEditState extends State<UserPostAddEdit> {
   Widget _buildWidgetForm() {
     return Form(
       key: formState,
-      child: Padding(
+      child: Container(
         padding: const EdgeInsets.all(16),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+            //mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
                 controller: controllerUserId,
-                decoration: InputDecoration(labelText: 'Enter user id'),
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'User id'),
                 validator: (value) {
                   return value == null || value.isEmpty
                       ? 'Enter user id'
@@ -106,21 +109,22 @@ class _UserPostAddEditState extends State<UserPostAddEdit> {
                 },
               ),
               TextFormField(
+                autocorrect: false,
                 maxLength: 20,
                 controller: controllerTitle,
-                decoration: InputDecoration(
-                  labelText: 'Enter title',
+                decoration: const InputDecoration(
+                  labelText: 'Title',
                 ),
                 validator: (value) {
                   return value == null || value.isEmpty ? 'Enter title' : null;
                 },
               ),
               TextFormField(
+                autocorrect: false,
                 maxLength: 100,
-                //keyboardType: TextInputType.multiline,
                 controller: controllerDescription,
                 decoration: InputDecoration(
-                  labelText: 'Enter description',
+                  labelText: 'Description',
                 ),
                 validator: (value) {
                   return value == null || value.isEmpty
@@ -153,7 +157,7 @@ class _UserPostAddEditState extends State<UserPostAddEdit> {
                                 userId: int.parse(userId),
                                 title: title,
                                 body: description);
-                            userPostCubit.addUserPostUseCase(userPostEntity);
+                            userPostCubit.addUserPost(userPostEntity);
                           }
                         }
                       }

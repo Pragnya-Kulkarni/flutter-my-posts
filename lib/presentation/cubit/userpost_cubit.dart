@@ -26,10 +26,10 @@ class UserPostCubit extends Cubit<UserPostState> {
       emit(const UserPostLoading());
       final userPostEither = await getUserPostUseCase.call(NoParams());
       userPostEither.fold(
-          (failure) => emit(UserPostError(message: failure.toString())),
+          (failure) => emit(UserPostLoadFailed(message: failure.toString())),
           (loadedPost) => emit(UserPostLoaded(lstUserPost: loadedPost)));
     } on Exception catch (e) {
-      emit(UserPostError(message: e.toString()));
+      emit(UserPostLoadFailed(message: e.toString()));
     }
   }
 
@@ -38,15 +38,15 @@ class UserPostCubit extends Cubit<UserPostState> {
       emit(const UserPostLoading());
       final deleteUserPostEither = await deleteUserPostUseCase.call(id);
       deleteUserPostEither.fold(
-          (failure) => emit(UserPostError(message: failure.toString())),
+          (failure) => emit(UserPostLoadFailed(message: failure.toString())),
           (isSuccess) => emit(UserPostDeleted()));
 
       final userPostEither = await getUserPostUseCase.call(NoParams());
       userPostEither.fold(
-          (failure) => emit(UserPostError(message: failure.toString())),
+          (failure) => emit(UserPostLoadFailed(message: failure.toString())),
           (loadedPost) => emit(UserPostLoaded(lstUserPost: loadedPost)));
     } on Exception catch (e) {
-      emit(UserPostError(message: e.toString()));
+      emit(UserPostDeleteFailed(message: e.toString()));
     }
   }
 
