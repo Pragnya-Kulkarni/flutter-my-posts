@@ -20,4 +20,13 @@ class UserPostModel extends UserPostEntity {
   Map<String, dynamic> toJson() {
     return {"id": id, "userId": userId, "title": title, "body": body};
   }
+
+  factory UserPostModel.fromEntity(UserPostEntity userPostEntity) {
+    return UserPostModel(
+      id: userPostEntity.id,
+      userId: userPostEntity.userId,
+      title: userPostEntity.title,
+      body: userPostEntity.body,
+    );
+  }
 }

@@ -10,6 +10,10 @@ abstract class UserPostRemoteDataSource {
   Future<UserPostModel> getUserPostById(int id);
   // throws [ServerException] exception on error
   Future<void> deleteUserPostById(int id);
+  // throws [ServerException] exception on error
+  Future<UserPostModel> addUserPost(UserPostModel userPostModel);
+
+  Future<UserPostModel> updateUserPost(UserPostModel userPostModel);
 }
 
 const String userPostURL = 'https://jsonplaceholder.typicode.com/posts/';
@@ -34,7 +38,7 @@ class UserPostRemoteDataImpl implements UserPostRemoteDataSource {
       }
       return userPosts;
     } else {
-      throw ServerException("Server error occurred");
+      throw ServerException("Failed to get user posts");
     }
   }
 
@@ -46,7 +50,7 @@ class UserPostRemoteDataImpl implements UserPostRemoteDataSource {
     if (response.statusCode == 200) {
       return UserPostModel.fromJson(jsonDecode(response.body));
     } else {
-      throw ServerException("Server error occurred");
+      throw ServerException("Failed to get user post");
     }
   }
 
@@ -58,7 +62,33 @@ class UserPostRemoteDataImpl implements UserPostRemoteDataSource {
     if (response.statusCode == 200) {
       return;
     } else {
-      throw ServerException("Server error occurred");
+      throw ServerException("Failed to delete");
+    }
+  }
+
+  @override
+  Future<UserPostModel> addUserPost(UserPostModel userPostModel) async {
+    String link = userPostURL;
+    final response = await client.post(Uri.parse(link),
+        headers: {'Content-type': 'application/json; charset=UTF-8'},
+        body: jsonEncode(userPostModel.toJson()));
+    if (response.statusCode == 201) {
+      return UserPostModel.fromJson(jsonDecode(response.body));
+    } else {
+      throw ServerException("Failed to add");
+    }
+  }
+
+  @override
+  Future<UserPostModel> updateUserPost(UserPostModel userPostModel) async {
+    String link = userPostURL + "/" + userPostModel.id.toString();
+    final response = await client.put(Uri.parse(link),
+        headers: {'Content-type': 'application/json; charset=UTF-8'},
+        body: jsonEncode(userPostModel.toJson()));
+    if (response.statusCode == 200) {
+      return UserPostModel.fromJson(jsonDecode(response.body));
+    } else {
+      throw ServerException("Failed to update");
     }
   }
 }

@@ -6,4 +6,8 @@ abstract class UserPostRepository {
   Future<Either<Failure, List<UserPostEntity>>> getUserPosts();
   Future<Either<Failure, UserPostEntity>> getUserPostsById(int id);
   Future<Either<Failure, void>> deleteUserPostsById(int id);
+  Future<Either<Failure, UserPostEntity>> addUserPost(
+      UserPostEntity userPostEntity);
+  Future<Either<Failure, UserPostEntity>> updateUserPost(
+      UserPostEntity userPostEntity);
 }

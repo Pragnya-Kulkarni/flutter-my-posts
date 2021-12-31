@@ -5,7 +5,9 @@ import 'package:my_posts/core/network/network_info.dart';
 import 'package:my_posts/data/datasources/user_post_local_data_source.dart';
 import 'package:my_posts/data/datasources/user_post_remote_data_source.dart';
 import 'package:my_posts/data/repositories/user_post_repository_impl.dart';
+import 'package:my_posts/domain/usecases/add_user_post_usecase.dart';
 import 'package:my_posts/domain/usecases/get_user_post_usecase.dart';
+import 'package:my_posts/domain/usecases/update_user_post_usecase.dart';
 import 'package:my_posts/presentation/cubit/userpost_cubit.dart';
 import 'package:my_posts/presentation/pages/user_post_initial_page.dart';
 import 'package:http/http.dart' as http;
@@ -47,6 +49,11 @@ class _MyHomePageState extends State<MyHomePage> {
     return MaterialApp(
         home: BlocProvider(
             create: (context) => UserPostCubit(
+                addUserPostUseCase: AddUserPostUseCase(UserPostRepositoryImpl(
+                    remoteDataSource:
+                        UserPostRemoteDataImpl(client: http.Client()),
+                    networkInfo: NetworkInfoImpl(InternetConnectionChecker()),
+                    localDataSource: UserPostLocalDataImpl())),
                 deleteUserPostUseCase: DeleteUserPostUseCase(
                     UserPostRepositoryImpl(
                         remoteDataSource:
@@ -58,7 +65,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     remoteDataSource:
                         UserPostRemoteDataImpl(client: http.Client()),
                     networkInfo: NetworkInfoImpl(InternetConnectionChecker()),
-                    localDataSource: UserPostLocalDataImpl()))),
+                    localDataSource: UserPostLocalDataImpl())),
+                updateUserPostUseCase: UpdateUserPostUseCase(
+                    UserPostRepositoryImpl(
+                        remoteDataSource:
+                            UserPostRemoteDataImpl(client: http.Client()),
+                        networkInfo:
+                            NetworkInfoImpl(InternetConnectionChecker()),
+                        localDataSource: UserPostLocalDataImpl()))),
             child: const UserPostInitialPage()));
   }
 }
