@@ -13,6 +13,5 @@ class UserPostEntity extends Equatable {
       required this.body});
 
   @override
-  // TODO: implement props
   List<Object> get props => [userId, id, title, body];
 }

@@ -60,14 +60,14 @@ class UserPostRepositoryImpl implements UserPostRepository {
     if (await networkInfo.isConnected) {
       try {
         await remoteDataSource.deleteUserPostById(id);
-        return Right(null);
+        return const Right(null);
       } on ServerException {
         return Left(ServerFailure());
       }
     } else {
       try {
         await localDataSource.deleteUserPostById(id);
-        return Right(null);
+        return const Right(null);
       } on CacheException {
         return Left(CacheFailure());
       }

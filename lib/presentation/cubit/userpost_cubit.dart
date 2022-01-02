@@ -38,8 +38,8 @@ class UserPostCubit extends Cubit<UserPostState> {
       emit(const UserPostLoading());
       final deleteUserPostEither = await deleteUserPostUseCase.call(id);
       deleteUserPostEither.fold(
-          (failure) => emit(UserPostLoadFailed(message: failure.toString())),
-          (isSuccess) => emit(UserPostDeleted()));
+          (failure) => emit(UserPostDeleteFailed(message: failure.toString())),
+          (isSuccess) => emit(const UserPostDeleted()));
 
       final userPostEither = await getUserPostUseCase.call(NoParams());
       userPostEither.fold(

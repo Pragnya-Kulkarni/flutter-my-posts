@@ -1,3 +1,5 @@
+import 'package:my_posts/core/error/exception.dart';
+import 'package:my_posts/core/error/failures.dart';
 import 'package:my_posts/data/models/user_post_model.dart';
 
 abstract class UserPostLocalDataSource {
@@ -15,31 +17,26 @@ abstract class UserPostLocalDataSource {
 class UserPostLocalDataImpl implements UserPostLocalDataSource {
   @override
   Future<List<UserPostModel>> getUserPost() {
-    // TODO: implement getUserPost
-    throw UnimplementedError();
+    throw CacheException();
   }
 
   @override
   Future<UserPostModel> getUserPostById(int id) {
-    // TODO: implement getUserPostById
-    throw UnimplementedError();
+    throw CacheException();
   }
 
   @override
   Future<void> deleteUserPostById(int id) {
-    // TODO: implement deleteUserPostById
-    throw UnimplementedError();
+    throw CacheException();
   }
 
   @override
   Future<UserPostModel> addUserPost(UserPostModel userPostModel) {
-    // TODO: implement addUserPost
-    throw UnimplementedError();
+    throw CacheException();
   }
 
   @override
   Future<UserPostModel> updateUserPost(UserPostModel userPostModel) {
-    // TODO: implement updateUserPost
-    throw UnimplementedError();
+    throw CacheException();
   }
 }

@@ -93,37 +93,38 @@ class _UserPostAddEditState extends State<UserPostAddEdit> {
   Widget _buildWidgetForm() {
     return Form(
       key: formState,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-            //mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: controllerUserId,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'User id'),
-                validator: (value) {
-                  return value == null || value.isEmpty
-                      ? 'Enter user id'
-                      : null;
-                },
+      child: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            TextFormField(
+              controller: controllerUserId,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(labelText: 'User id'),
+              validator: (value) {
+                return value == null || value.isEmpty ? 'Enter user id' : null;
+              },
+            ),
+            TextFormField(
+              autocorrect: false,
+              maxLength: 20,
+              controller: controllerTitle,
+              decoration: const InputDecoration(
+                labelText: 'Title',
               ),
-              TextFormField(
-                autocorrect: false,
-                maxLength: 20,
-                controller: controllerTitle,
-                decoration: const InputDecoration(
-                  labelText: 'Title',
-                ),
-                validator: (value) {
-                  return value == null || value.isEmpty ? 'Enter title' : null;
-                },
-              ),
-              TextFormField(
+              validator: (value) {
+                return value == null || value.isEmpty ? 'Enter title' : null;
+              },
+            ),
+            Flexible(
+              child: TextFormField(
                 autocorrect: false,
                 maxLength: 100,
+                maxLines: 3,
                 controller: controllerDescription,
-                decoration: InputDecoration(
+                keyboardType: TextInputType.multiline,
+                decoration: const InputDecoration(
                   labelText: 'Description',
                 ),
                 validator: (value) {
@@ -132,38 +133,41 @@ class _UserPostAddEditState extends State<UserPostAddEdit> {
                       : null;
                 },
               ),
-              SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                    child: Text(widget.isEdit ? 'UPDATE' : 'SUBMIT'),
-                    onPressed: () {
-                      if (formState.currentState!.validate()) {
-                        {
-                          var userId = controllerUserId.text.trim();
-                          var title = controllerTitle.text.trim();
-                          var description = controllerDescription.text.trim();
-                          if (widget.isEdit) {
-                            var userPostEntity = UserPostEntity(
-                              id: widget.userPostEntity!.id,
+            ),
+            //),
+            SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                  child: Text(widget.isEdit ? 'UPDATE' : 'SUBMIT'),
+                  onPressed: () {
+                    if (formState.currentState!.validate()) {
+                      {
+                        var userId = controllerUserId.text.trim();
+                        var title = controllerTitle.text.trim();
+                        var description = controllerDescription.text.trim();
+                        if (widget.isEdit) {
+                          var userPostEntity = UserPostEntity(
+                            id: widget.userPostEntity!.id,
+                            userId: int.parse(userId),
+                            title: title,
+                            body: description,
+                          );
+                          userPostCubit.updateUserPost(userPostEntity);
+                        } else {
+                          var userPostEntity = UserPostEntity(
+                              id: 0,
                               userId: int.parse(userId),
                               title: title,
-                              body: description,
-                            );
-                            userPostCubit.updateUserPost(userPostEntity);
-                          } else {
-                            var userPostEntity = UserPostEntity(
-                                id: 0,
-                                userId: int.parse(userId),
-                                title: title,
-                                body: description);
-                            userPostCubit.addUserPost(userPostEntity);
-                          }
+                              body: description);
+                          userPostCubit.addUserPost(userPostEntity);
                         }
                       }
-                    }),
-              ),
-            ]),
+                    }
+                  }),
+            ),
+          ]),
+        ),
       ),
     );
   }
