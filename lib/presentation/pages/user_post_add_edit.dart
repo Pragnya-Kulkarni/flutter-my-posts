@@ -96,77 +96,84 @@ class _UserPostAddEditState extends State<UserPostAddEdit> {
       child: SafeArea(
         child: Container(
           padding: const EdgeInsets.all(16),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            TextFormField(
-              controller: controllerUserId,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(labelText: 'User id'),
-              validator: (value) {
-                return value == null || value.isEmpty ? 'Enter user id' : null;
-              },
-            ),
-            TextFormField(
-              autocorrect: false,
-              maxLength: 20,
-              controller: controllerTitle,
-              decoration: const InputDecoration(
-                labelText: 'Title',
-              ),
-              validator: (value) {
-                return value == null || value.isEmpty ? 'Enter title' : null;
-              },
-            ),
-            Flexible(
-              child: TextFormField(
-                autocorrect: false,
-                maxLength: 100,
-                maxLines: 3,
-                controller: controllerDescription,
-                keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
-                ),
-                validator: (value) {
-                  return value == null || value.isEmpty
-                      ? 'Enter description'
-                      : null;
-                },
-              ),
-            ),
-            //),
-            SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                  child: Text(widget.isEdit ? 'UPDATE' : 'SUBMIT'),
-                  onPressed: () {
-                    if (formState.currentState!.validate()) {
-                      {
-                        var userId = controllerUserId.text.trim();
-                        var title = controllerTitle.text.trim();
-                        var description = controllerDescription.text.trim();
-                        if (widget.isEdit) {
-                          var userPostEntity = UserPostEntity(
-                            id: widget.userPostEntity!.id,
-                            userId: int.parse(userId),
-                            title: title,
-                            body: description,
-                          );
-                          userPostCubit.updateUserPost(userPostEntity);
-                        } else {
-                          var userPostEntity = UserPostEntity(
-                              id: 0,
-                              userId: int.parse(userId),
-                              title: title,
-                              body: description);
-                          userPostCubit.addUserPost(userPostEntity);
-                        }
-                      }
-                    }
-                  }),
-            ),
-          ]),
+          child: SingleChildScrollView(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  TextFormField(
+                    controller: controllerUserId,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                        labelText: 'User id', border: OutlineInputBorder()),
+                    validator: (value) {
+                      return value == null || value.isEmpty
+                          ? 'Enter user id'
+                          : null;
+                    },
+                  ),
+                  const SizedBox(height: 18),
+                  TextFormField(
+                    autocorrect: false,
+                    maxLength: 20,
+                    controller: controllerTitle,
+                    decoration: const InputDecoration(
+                        labelText: 'Title', border: OutlineInputBorder()),
+                    validator: (value) {
+                      return value == null || value.isEmpty
+                          ? 'Enter title'
+                          : null;
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    autocorrect: false,
+                    maxLength: 100,
+                    maxLines: 4,
+                    controller: controllerDescription,
+                    keyboardType: TextInputType.multiline,
+                    decoration: const InputDecoration(
+                        labelText: 'Description', border: OutlineInputBorder()),
+                    validator: (value) {
+                      return value == null || value.isEmpty
+                          ? 'Enter description'
+                          : null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                        child: Text(widget.isEdit ? 'UPDATE' : 'SUBMIT'),
+                        onPressed: () {
+                          if (formState.currentState!.validate()) {
+                            {
+                              var userId = controllerUserId.text.trim();
+                              var title = controllerTitle.text.trim();
+                              var description =
+                                  controllerDescription.text.trim();
+                              if (widget.isEdit) {
+                                var userPostEntity = UserPostEntity(
+                                  id: widget.userPostEntity!.id,
+                                  userId: int.parse(userId),
+                                  title: title,
+                                  body: description,
+                                );
+                                userPostCubit.updateUserPost(userPostEntity);
+                              } else {
+                                var userPostEntity = UserPostEntity(
+                                    id: 0,
+                                    userId: int.parse(userId),
+                                    title: title,
+                                    body: description);
+                                userPostCubit.addUserPost(userPostEntity);
+                              }
+                            }
+                          }
+                        }),
+                  ),
+                ]),
+          ),
         ),
       ),
     );

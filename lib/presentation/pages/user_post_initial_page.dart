@@ -36,7 +36,8 @@ class _UserPostInitialPageState extends State<UserPostInitialPage> {
                         type: PageTransitionType.bottomToTop,
                         child: addEditPage(null),
                         ctx: context));
-                if (result != null) {
+                //get user post only on successful add
+                if (result != null && result) {
                   userPostCubit.getUserPost();
                 }
               },
@@ -189,7 +190,8 @@ class _UserPostInitialPageState extends State<UserPostInitialPage> {
                                                               lstUserPost[
                                                                   index]),
                                                           ctx: context));
-                                                  if (result != null) {
+                                                  if (result != null &&
+                                                      result) {
                                                     userPostCubit.getUserPost();
                                                   }
                                                 },
@@ -262,7 +264,5 @@ class _UserPostInitialPageState extends State<UserPostInitialPage> {
     return BlocProvider.value(
         value: userPostCubit,
         child: UserPostAddEdit(isEdit: isEdit, userPostEntity: userPostEntity));
-
-    //);
   }
 }

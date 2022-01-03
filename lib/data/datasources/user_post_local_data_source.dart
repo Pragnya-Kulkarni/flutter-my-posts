@@ -1,5 +1,4 @@
 import 'package:my_posts/core/error/exception.dart';
-import 'package:my_posts/core/error/failures.dart';
 import 'package:my_posts/data/models/user_post_model.dart';
 
 abstract class UserPostLocalDataSource {
