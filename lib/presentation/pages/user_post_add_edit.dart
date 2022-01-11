@@ -99,6 +99,7 @@ class _UserPostAddEditState extends State<UserPostAddEdit> {
           child: SingleChildScrollView(
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   TextFormField(
